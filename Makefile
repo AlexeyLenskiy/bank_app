@@ -8,9 +8,15 @@ dropdb:
 	docker exec -it postgres15  dropdb bank_app
 
 migrateup:
-	C:\Users\Alexey\Documents\GoProjects\migrate -path db/migration -database "postgresql://root:password@localhost:5432/bank_app?sslmode=disable" -verbose up
+	migrate -path db/migration -database "postgresql://root:password@localhost:5432/bank_app?sslmode=disable" -verbose up
 
 migratedown:
+	migrate -path db/migration -database "postgresql://root:password@localhost:5432/bank_app?sslmode=disable" -verbose down
+
+migrateupwin:
+	C:\Users\Alexey\Documents\GoProjects\migrate -path db/migration -database "postgresql://root:password@localhost:5432/bank_app?sslmode=disable" -verbose up
+
+migratedownwin:
 	C:\Users\Alexey\Documents\GoProjects\migrate -path db/migration -database "postgresql://root:password@localhost:5432/bank_app?sslmode=disable" -verbose down
 
 sqlc:
