@@ -65,3 +65,28 @@ func (server *Server) getUser(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, user)
 }
+
+type getUsersRequest struct {
+	Page  int32 `form:"page" binding:"required,min=1"`
+	Limit int32 `form:"limit" binding:"required,min=5,max=20"`
+}
+
+func (server *Server) getUsers(ctx *gin.Context) {
+	var req getUsersRequest
+	if err := ctx.ShouldBindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	arg := db.ListUsersParams{
+		Offset: req.Page - 1,
+		Limit:  req.Page * req.Limit,
+	}
+
+	users, err := server.store.ListUsers(ctx, arg)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, users)
+}
