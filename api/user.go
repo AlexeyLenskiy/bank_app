@@ -2,9 +2,11 @@ package api
 
 import (
 	db "bank-app/db/sqlc"
+	"database/sql"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type createUserRequest struct {
@@ -39,4 +41,27 @@ func (server *Server) createUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, user.ID)
+}
+
+type getUserRequest struct {
+	Id string `uri:"id" binding:"required"`
+}
+
+func (server *Server) getUser(ctx *gin.Context) {
+	var req getUserRequest
+	if err := ctx.ShouldBindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	user, err := server.store.GetUser(ctx, uuid.MustParse(req.Id))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorResponse(err))
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, user)
 }
