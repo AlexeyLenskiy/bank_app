@@ -16,7 +16,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func RandomInit(min, max int64) int64 {
+func RandomInt(min, max int64) int64 {
 	return min + rand.Int63n(max-min+1)
 }
 
@@ -42,17 +42,17 @@ func RandomEmail() string {
 }
 
 func RandomPhone() string {
-	phone := RandomInit(10000000, 9999999999)
+	phone := RandomInt(10000000, 9999999999)
 	return "+" + strconv.Itoa(int(phone))
 }
 
 func RandomPin() string {
-	pin := RandomInit(100000000, 9999999999)
+	pin := RandomInt(100000000, 9999999999)
 	return strconv.Itoa(int(pin))
 }
 
 func RandomBalance() int64 {
-	balance := RandomInit(0, 999999)
+	balance := RandomInt(0, 999999)
 	return balance
 }
 
@@ -63,6 +63,6 @@ func RandomCurrency() string {
 }
 
 func RandomAmount() int64 {
-	amount := RandomInit(0, 1000)
+	amount := RandomInt(0, 1000)
 	return amount
 }

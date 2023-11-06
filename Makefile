@@ -28,4 +28,7 @@ test:
 server:
 	go run main.go
 
+mock:
+	C:\Users\Alexey\Documents\goworkspace\bin\mockgen -package mockdb -destination db/sqlc/mock/store.go bank-app/db/sqlc Store  
+
 .PHONY: postgres createdb dropdb migrateup migratedown sqlc test server
